@@ -1,0 +1,45 @@
+class Solution {
+    List<List<Integer>> ll=new ArrayList<>();
+    int dir[][]={{1,0},{0,1},{-1,0},{0,-1}};
+    public List<List<Integer>> pacificAtlantic(int[][] heights) {
+        int n=heights.length;
+        int m=heights[0].length;
+         boolean pacific[][]=new boolean[n][m];
+        boolean atlantic[][]=new boolean[n][m];
+
+        for(int i=0;i<n;i++)
+        {
+            dfs(heights,pacific,Integer.MIN_VALUE,i,0);
+            dfs(heights,atlantic,Integer.MIN_VALUE,i,m-1);
+        }
+        for(int i=0;i<m;i++)
+        {
+            dfs(heights,pacific,Integer.MIN_VALUE,0,i);
+            dfs(heights,atlantic,Integer.MIN_VALUE,n-1,i);
+        }
+
+        for(int i=0;i<n;i++)
+        {
+            for(int j=0;j<m;j++)
+            {
+                if(pacific[i][j]&&atlantic[i][j])
+                {
+                    
+                    ll.add(Arrays.asList(i,j));
+                }
+            }
+        }
+        return ll;
+    }
+    public void dfs(int[][] heights, boolean[][] ocean,int h,int x,int y)
+    {
+        int n=heights.length;
+        int m=heights[0].length;
+        if(x<0||x>=n||y<0||y>=m||ocean[x][y]||heights[x][y]<h) return;
+        ocean[x][y]=true;
+        for(int[] ar:dir)
+        {
+            dfs(heights,ocean,heights[x][y],x+ar[0],y+ar[1]);
+        }
+    }
+    }
